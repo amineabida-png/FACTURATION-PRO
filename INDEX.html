@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application de Facturation ARAB AGENCEMENT</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Arial,sans-serif;background-color:#f8f9fa;padding:20px;color:#333}
+    .container{max-width:1200px;margin:0 auto;background:#fff;border-radius:10px;box-shadow:0 0 20px rgba(0,0,0,.1);padding:25px;border-top:5px solid #FFD700}
+    header{text-align:center;margin-bottom:30px;padding-bottom:25px;border-bottom:2px solid #1E3A8A;background:linear-gradient(135deg,#1E3A8A 0%,#3B82F6 100%);padding:25px;border-radius:10px;color:#fff;position:relative}
+    header::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:3px;background:#FFD700}
+    h1{color:#FFD700;margin-bottom:10px;font-size:32px;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+    .document-types{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap;justify-content:center}
+    .doc-type-btn{padding:12px 24px;border:2px solid #1E3A8A;background:#fff;color:#1E3A8A;border-radius:8px;cursor:pointer;font-weight:bold;transition:all .3s ease;font-size:14px}
+    .doc-type-btn:hover{background:#3B82F6;color:#fff;border-color:#3B82F6;transform:translateY(-2px)}
+    .doc-type-btn.active{background:#1E3A8A;color:#fff;border-color:#1E3A8A;box-shadow:0 4px 8px rgba(30,58,138,.3)}
+    .form-section{background:#f8fafc;padding:25px;border-radius:10px;margin-bottom:25px;border:1px solid #E2E8F0}
+    .form-group{margin-bottom:20px}
+    .form-row{display:flex;gap:20px;margin-bottom:20px}
+    .form-row .form-group{flex:1}
+    label{display:block;margin-bottom:8px;font-weight:600;color:#1E3A8A;font-size:14px}
+    input,select{width:100%;padding:10px 12px;border:2px solid #CBD5E1;border-radius:6px;font-size:14px;transition:border-color .3s ease;background:#fff}
+    input:focus,select:focus{outline:none;border-color:#3B82F6;box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+    .items-table{width:100%;border-collapse:collapse;margin:25px 0;background:#fff;border:2px solid #1E3A8A;border-radius:8px;overflow:hidden}
+    .items-table th{background:linear-gradient(135deg,#1E3A8A 0%,#3B82F6 100%);color:#fff;padding:12px;text-align:left;font-weight:600;font-size:14px}
+    .items-table td{padding:12px;border-bottom:1px solid #E2E8F0;background:#fff}
+    .items-table input{border:1px solid #CBD5E1;padding:8px 10px;width:100%;border-radius:4px}
+    .items-table select{border:1px solid #CBD5E1;padding:8px 10px;width:100%;border-radius:4px}
+    .btn{padding:12px 24px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;transition:all .3s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn-primary{background:linear-gradient(135deg,#1E3A8A 0%,#3B82F6 100%);color:#fff}
+    .btn-primary:hover{background:linear-gradient(135deg,#3B82F6 0%,#1E3A8A 100%);transform:translateY(-2px);box-shadow:0 4px 12px rgba(30,58,138,.3)}
+    .btn-secondary{background:#64748B;color:#fff}
+    .btn-secondary:hover{background:#475569;transform:translateY(-2px)}
+    .btn-success{background:linear-gradient(135deg,#059669 0%,#10B981 100%);color:#fff}
+    .btn-success:hover{background:linear-gradient(135deg,#10B981 0%,#059669 100%);transform:translateY(-2px)}
+    .btn-danger{background:linear-gradient(135deg,#DC2626 0%,#EF4444 100%);color:#fff}
+    .btn-danger:hover{background:linear-gradient(135deg,#EF4444 0%,#DC2626 100%);transform:translateY(-2px)}
+    .totals-section{background:#fff;padding:25px;border:2px solid #1E3A8A;border-radius:10px;margin:25px 0;box-shadow:0 4px 6px rgba(0,0,0,.05)}
+    .totals-table{width:350px;margin-left:auto;border-collapse:collapse;border:2px solid #1E3A8A;border-radius:8px;overflow:hidden}
+    .totals-table td{padding:15px;border-bottom:1px solid #E2E8F0;background:#fff}
+    .totals-table tr:last-child td{font-weight:bold;font-size:18px;background:#FEF3C7;color:#1E3A8A}
+    .amount-words{background:linear-gradient(135deg,#FEF3C7 0%,#FFFBEB 100%);padding:20px;border-radius:10px;margin:25px 0;border:2px solid #FBBF24;color:#1E3A8A}
+    .actions{display:flex;gap:12px;justify-content:center;margin:30px 0;flex-wrap:wrap}
+    .documents-list{margin-top:40px;padding-top:25px;border-top:2px solid #E2E8F0}
+    .documents-table{width:100%;border-collapse:collapse;margin-top:15px;background:#fff;border:2px solid #1E3A8A;border-radius:8px;overflow:hidden}
+    .documents-table th{background:linear-gradient(135deg,#1E3A8A 0%,#3B82F6 100%);color:#fff;padding:15px;text-align:left;font-weight:600}
+    .documents-table td{padding:15px;border-bottom:1px solid #E2E8F0}
+    .action-buttons{display:flex;gap:8px}
+    .action-btn{padding:8px 12px;border:none;border-radius:4px;cursor:pointer;font-size:12px;color:#fff;transition:transform .2s ease}
+    .action-btn:hover{transform:scale(1.05)}
+    .action-btn.view{background:linear-gradient(135deg,#0EA5E9 0%,#3B82F6 100%)}
+    .action-btn.edit{background:linear-gradient(135deg,#F59E0B 0%,#FBBF24 100%)}
+    .action-btn.delete{background:linear-gradient(135deg,#EF4444 0%,#DC2626 100%)}
+    .action-btn.print{background:linear-gradient(135deg,#1E3A8A 0%,#3B82F6 100%)}
+    footer{text-align:center;margin-top:40px;padding-top:25px;border-top:2px solid #E2E8F0;color:#64748B;font-size:14px;background:linear-gradient(135deg,#F8FAFC 0%,#F1F5F9 100%);padding:25px;border-radius:10px}
+    .print-area{display:none}
+    @media print{
+      body *{visibility:hidden}
+      .print-area,.print-area *{visibility:visible}
+      .print-area{position:absolute;left:0;top:0;width:100%}
+      .print-page{padding-top:5.5cm!important;min-height:29.7cm;page-break-after:always;position:relative;box-sizing:border-box}
+      .print-page:last-child{page-break-after:avoid}
+      @page{size:A4 portrait;margin:0}
+      body{margin:0;padding:0}
+    }
+    .doc-number-editable{background-color:#FEF3C7!important;border:2px solid #FBBF24!important;font-weight:bold;color:#1E3A8A}
+    .number-info{font-size:12px;color:#64748B;margin-top:5px;font-style:italic}
+    .print-instructions{background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);padding:15px;border-radius:8px;margin-top:15px;font-size:13px;color:#1E3A8A;border:2px solid #FBBF24}
+    .mode-paiement-group{transition:all .3s ease;display:block}
+    .mode-paiement-group.removed{display:none}
+    .dynamic-section{transition:all .3s ease}
+    .dynamic-section.hidden{display:none}
+    .print-options{background:linear-gradient(135deg,#F8FAFC 0%,#F1F5F9 100%);padding:20px;border-radius:10px;margin:25px 0;border:2px solid #E2E8F0}
+    .print-options h3{margin-bottom:15px;color:#1E3A8A;font-size:18px}
+    .print-type-buttons{display:flex;gap:12px;flex-wrap:wrap}
+    .print-type-btn{padding:12px 20px;border:2px solid #1E3A8A;background:#fff;color:#1E3A8A;border-radius:6px;cursor:pointer;font-weight:600;transition:all .3s ease;flex:1;min-width:200px}
+    .print-type-btn:hover{background:#FEF3C7;border-color:#FBBF24}
+    .print-type-btn.active{background:linear-gradient(135deg,#1E3A8A 0%,#3B82F6 100%);color:#fff;border-color:#1E3A8A;box-shadow:0 4px 8px rgba(30,58,138,.2)}
+    .company-header{background:linear-gradient(135deg,#FFD700 0%,#FBBF24 100%);padding:10px 20px;border-radius:8px;margin-bottom:20px;border-left:5px solid #1E3A8A}
+    .company-name{font-size:22px;font-weight:bold;color:#1E3A8A;margin-bottom:5px}
+    .company-slogan{font-size:14px;color:#1E3A8A;opacity:.9}
+
+    /* AJOUTS (logo + cachet + choix) */
+    .custom-print-box{
+      margin: 20px 0;
+      padding: 18px;
+      background: linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);
+      border: 2px solid #FBBF24;
+      border-radius: 10px;
+      color: #1E3A8A;
+    }
+    .custom-print-box h3{margin-bottom:10px;font-size:16px}
+    .preview-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+    .preview-card{
+      flex:1;
+      min-width: 260px;
+      background:#fff;
+      border:1px solid #E2E8F0;
+      border-radius:10px;
+      padding:12px;
+    }
+    .preview-card small{display:block;color:#64748B;margin-top:6px}
+    .img-preview{
+      width:100%;
+      max-height:130px;
+      object-fit:contain;
+      border:1px dashed #CBD5E1;
+      border-radius:8px;
+      background:#F8FAFC;
+      padding:8px;
+    }
+    .radio-inline{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:10px}
+    .radio-inline label{margin:0;font-weight:600;color:#1E3A8A;font-size:13px;display:flex;gap:8px;align-items:center}
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <header>
+    <h1>📄 Application de Facturation ARAB AGENCEMENT</h1>
+    <p>Gestion professionnelle des documents commerciaux</p>
+    <div class="print-instructions">
+      <strong>⚠️ Important pour l'impression :</strong>
+      Deux modes d'impression disponibles:
+      <br>1️⃣ <strong>Avec papier à en-tête</strong> : 5.5cm d'espace vide en haut pour papier pré-imprimé
+      <br>2️⃣ <strong>Sans papier à en-tête</strong> : en-tête ARAB AGENCEMENT intégré
+      <br><strong>✓ Marges exactes : 0.5cm gauche/droite, 1cm bas</strong>
+      <br><strong>✓ Charte graphique jaune et bleu d'ARAB AGENCEMENT</strong>
+      <br><strong>✓ Pagination :</strong> 12 lignes par page (suite automatique)
+    </div>
+  </header>
+
+  <main>
+    <div class="company-header">
+      <div class="company-name">ARAB AGENCEMENT SARL</div>
+      <div class="company-slogan">Votre conseiller permanent en bâtiment - Rénovation - Tous corps d'état</div>
+    </div>
+
+    <div class="document-types">
+      <button type="button" class="doc-type-btn active" data-type="facture">Facture</button>
+      <button type="button" class="doc-type-btn" data-type="acompte">Facture Acompte</button>
+      <button type="button" class="doc-type-btn" data-type="devis">Devis</button>
+      <button type="button" class="doc-type-btn" data-type="commande">Bon de Commande</button>
+      <button type="button" class="doc-type-btn" data-type="livraison">Bon de Livraison</button>
+      <button type="button" class="doc-type-btn" data-type="intervention">Bon d'Intervention</button>
+      <button type="button" class="doc-type-btn" data-type="attachement">Attachement</button>
+    </div>
+
+    <div class="print-options">
+      <h3>🖨️ Options d'impression</h3>
+      <div class="print-type-buttons">
+        <button type="button" class="print-type-btn active" data-print-type="with-header">Avec papier à en-tête (5.5cm haut)</button>
+        <button type="button" class="print-type-btn" data-print-type="without-header">Sans papier à en-tête (ARAB AGENCEMENT intégré)</button>
+      </div>
+    </div>
+
+    <!-- ✅ Personnalisation (uniquement pour impression SANS papier) -->
+    <div class="custom-print-box">
+      <h3>🧩 Personnalisation (impression <u>sans papier à en-tête</u>)</h3>
+      <div class="preview-row">
+        <div class="preview-card">
+          <label for="logo-upload">1) Télécharger le LOGO (à afficher dans l'en-tête intégré)</label>
+          <input type="file" id="logo-upload" accept="image/*" />
+          <img id="logo-preview" class="img-preview" alt="Aperçu logo" />
+          <small>Le logo est enregistré dans le navigateur (localStorage).</small>
+        </div>
+
+        <div class="preview-card">
+          <label for="stamp-upload">2) Télécharger le CACHET (optionnel)</label>
+          <input type="file" id="stamp-upload" accept="image/*" />
+          <img id="stamp-preview" class="img-preview" alt="Aperçu cachet" />
+          <small>Le cachet est enregistré dans le navigateur (localStorage).</small>
+
+          <div class="radio-inline" style="margin-top:12px">
+            <label><input type="radio" name="signature-mode" value="electronic" checked /> Signature électronique</label>
+            <label><input type="radio" name="signature-mode" value="stamp" /> Cachet (si téléchargé)</label>
+          </div>
+          <small style="margin-top:10px;">⚠️ Le cachet / la signature n'apparaît que sur la dernière page.</small>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button type="button" class="btn btn-secondary" id="clear-logo">🧽 Supprimer logo</button>
+        <button type="button" class="btn btn-secondary" id="clear-stamp">🧽 Supprimer cachet</button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="client-name">Nom du Client *</label>
+          <input type="text" id="client-name" placeholder="Nom complet ou entreprise" required />
+        </div>
+        <div class="form-group">
+          <label for="client-ice">ICE *</label>
+          <input type="text" id="client-ice" placeholder="ICE du client" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="client-address">Adresse</label>
+          <input type="text" id="client-address" placeholder="Adresse complète" />
+        </div>
+        <div class="form-group">
+          <label for="client-phone">Téléphone</label>
+          <input type="text" id="client-phone" placeholder="Téléphone" />
+        </div>
+      </div>
+
+      <h2 style="margin-top:30px;color:#1E3A8A;border-bottom:2px solid #FFD700;padding-bottom:10px">Informations Document</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="doc-number">Numéro *</label>
+          <input type="text" id="doc-number" class="doc-number-editable" required />
+          <div class="number-info">Modifiez manuellement ou laissez la numérotation automatique</div>
+        </div>
+        <div class="form-group">
+          <label for="doc-date">Date *</label>
+          <input type="date" id="doc-date" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="doc-reference">Référence</label>
+          <input type="text" id="doc-reference" placeholder="Référence interne" />
+        </div>
+        <div class="form-group mode-paiement-group" id="mode-paiement-group">
+          <label for="doc-mode-paiement">Mode de paiement</label>
+          <select id="doc-mode-paiement">
+            <option value="especes">Espèces</option>
+            <option value="cheque">Chèque</option>
+            <option value="virement">Virement</option>
+            <option value="carte">Carte bancaire</option>
+          </select>
+        </div>
+      </div>
+
+      <h2 style="margin-top:30px;color:#1E3A8A;border-bottom:2px solid #FFD700;padding-bottom:10px">Articles et Services</h2>
+
+      <table class="items-table" id="items-table">
+        <thead>
+        <tr id="table-headers">
+          <th width="40%">DÉSIGNATION</th>
+          <th width="8%">UNITE</th>
+          <th width="12%">QUANTITÉ</th>
+          <th width="15%">PRIX UNITAIRE HT</th>
+          <th width="10%">TVA</th>
+          <th width="10%">MONTANT HT</th>
+          <th width="5%"></th>
+        </tr>
+        </thead>
+        <tbody id="items-body"></tbody>
+      </table>
+
+      <button type="button" class="btn btn-success" id="add-item">+ Ajouter une ligne</button>
+
+      <div class="dynamic-section" id="tva-options" style="margin:20px 0;padding:20px;background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border-radius:8px;border:2px solid #FBBF24">
+        <strong style="color:#1E3A8A">TVA par défaut :</strong>
+        <label style="margin-right:15px"><input type="radio" name="global-tva" value="0.20" checked /> 20%</label>
+        <label style="margin-right:15px"><input type="radio" name="global-tva" value="0.14" /> 14%</label>
+        <label style="margin-right:15px"><input type="radio" name="global-tva" value="0.10" /> 10%</label>
+        <label><input type="radio" name="global-tva" value="0.00" /> 0%</label>
+      </div>
+
+      <div class="dynamic-section" id="totals-section">
+        <h2 style="color:#1E3A8A;margin-bottom:20px">Totaux</h2>
+        <table class="totals-table">
+          <tr><td>Total HT :</td><td id="total-ht">0.00 DH</td></tr>
+          <tr><td>TVA :</td><td id="total-tva">0.00 DH</td></tr>
+          <tr><td>Total TTC :</td><td id="total-ttc">0.00 DH</td></tr>
+        </table>
+      </div>
+
+      <div class="dynamic-section amount-words" id="amount-words-section">
+        <strong id="amount-label" style="color:#1E3A8A">Arrêté la présente facture à la somme de :</strong><br />
+        <span id="amount-in-words" style="font-size:15px;line-height:1.6">Zéro Dirhams</span>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="save-doc">💾 Enregistrer</button>
+        <button type="button" class="btn btn-secondary" id="new-doc">🆕 Nouveau</button>
+        <button type="button" class="btn btn-success" id="print-doc">🖨️ Imprimer</button>
+        <button type="button" class="btn btn-secondary" id="auto-number">🔢 Numéro auto</button>
+      </div>
+    </div>
+
+    <div class="documents-list">
+      <h2 style="color:#1E3A8A;margin-bottom:20px;border-bottom:2px solid #FFD700;padding-bottom:10px">📋 Documents Enregistrés</h2>
+      <table class="documents-table" id="documents-table">
+        <thead>
+        <tr>
+          <th>Type</th>
+          <th>Numéro</th>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Montant TTC</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="saved-docs"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="print-area" class="print-area"></div>
+
+  <footer>
+    <p style="font-weight:bold;color:#1E3A8A;font-size:16px">© 2024 Application de Facturation ARAB AGENCEMENT - Version 2.3</p>
+    <p style="margin:10px 0">Tous les montants sont en Dirhams Marocains (MAD)</p>
+    <p style="color:#1E3A8A;font-weight:bold;background:#FEF3C7;padding:10px;border-radius:6px;display:inline-block">
+      🖨️ 2 modes d'impression | ✓ Marges exactes (0.5cm G/D, 1cm bas) | ✓ 5.5cm haut pour papier pré-imprimé | ✓ 12 lignes/page
+    </p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   ✅ VERSION 2.3 - PAGINATION + SUITE + CACHET DERNIERE PAGE
+   - Pagination impression : 12 lignes par page
+   - Même paramètres d'entête sur toutes les pages (2 modes)
+   - Mot "SUITE" sous N° doc uniquement à partir de la 2ème page
+   - "Suite du document - Page X/Y" uniquement à partir de la 2ème page
+   - Cachet/signature uniquement sur la DERNIERE page (mode sans papier entête)
+   - Mode "avec papier entête": pas de cachet (inchangé)
+   - Remplacement unité: "Mètre linéaire (ml)" (label)
+========================================================= */
+
+(function () {
+  const LINES_PER_PAGE = 12;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    try { initApp(); }
+    catch (e) {
+      console.error("Erreur initApp:", e);
+      alert("Erreur JavaScript détectée. Ouvrez F12 > Console pour voir l'erreur.");
+    }
+  });
+
+  function initApp() {
+    window.currentDocType = 'facture';
+    window.currentPrintType = 'with-header';
+    window.documents = [];
+    window.nextDocNumbers = {};
+    window.autoNumberEnabled = true;
+    window.isEditing = false;
+
+    window.printLogoDataUrl = '';
+    window.printStampDataUrl = '';
+    window.signatureMode = 'electronic'; // 'electronic' | 'stamp'
+
+    loadFromStorage();
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('doc-date').value = today;
+
+    initItemsTable();
+    initDocNumbers();
+    updateDocumentNumber();
+    initEvents();
+    calculateTotals();
+    updateAmountLabel();
+    displaySavedDocuments();
+    updateModePaiementDisplay();
+    updateDocumentTypeDisplay();
+
+    hydratePrintAssetsUI();
+  }
+
+  // ==================== STORAGE ====================
+  function loadFromStorage() {
+    try {
+      const savedDocs = localStorage.getItem('documents');
+      if (savedDocs) window.documents = JSON.parse(savedDocs);
+
+      const savedNumbers = localStorage.getItem('nextDocNumbers');
+      if (savedNumbers) window.nextDocNumbers = JSON.parse(savedNumbers);
+
+      const savedLogo = localStorage.getItem('printLogoDataUrl');
+      if (savedLogo) window.printLogoDataUrl = savedLogo;
+
+      const savedStamp = localStorage.getItem('printStampDataUrl');
+      if (savedStamp) window.printStampDataUrl = savedStamp;
+
+      const savedSigMode = localStorage.getItem('signatureMode');
+      if (savedSigMode) window.signatureMode = savedSigMode;
+    } catch (error) {
+      console.error('Erreur lors du chargement:', error);
+      window.documents = [];
+      window.nextDocNumbers = {};
+      window.printLogoDataUrl = '';
+      window.printStampDataUrl = '';
+      window.signatureMode = 'electronic';
+    }
+  }
+
+  function saveToStorage() {
+    try {
+      localStorage.setItem('documents', JSON.stringify(window.documents));
+      localStorage.setItem('nextDocNumbers', JSON.stringify(window.nextDocNumbers));
+      localStorage.setItem('printLogoDataUrl', window.printLogoDataUrl || '');
+      localStorage.setItem('printStampDataUrl', window.printStampDataUrl || '');
+      localStorage.setItem('signatureMode', window.signatureMode || 'electronic');
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
+    }
+  }
+
+  // ==================== NUMÉROS ====================
+  function initDocNumbers() {
+    const types = ['facture', 'acompte', 'devis', 'commande', 'livraison', 'intervention', 'attachement'];
+    types.forEach(type => {
+      if (!window.nextDocNumbers[type]) {
+        const existingDocs = window.documents.filter(doc => doc.type === type);
+        if (existingDocs.length > 0) {
+          const numbers = existingDocs.map(doc => {
+            const match = (doc.number || '').match(/\d+$/);
+            return match ? parseInt(match[0], 10) : 0;
+          });
+          const maxNumber = Math.max(...numbers);
+          window.nextDocNumbers[type] = maxNumber + 1;
+        } else {
+          window.nextDocNumbers[type] = 1;
+        }
+      }
+    });
+  }
+
+  function generateAutoNumber() {
+    window.autoNumberEnabled = true;
+    updateDocumentNumber();
+    alert('Numérotation automatique réactivée !');
+  }
+
+  function updateDocumentNumber() {
+    if (!window.autoNumberEnabled) return;
+
+    const prefixes = {
+      facture: 'FAC',
+      acompte: 'FAC-AC',
+      devis: 'DEV',
+      commande: 'BC',
+      livraison: 'BL',
+      intervention: 'BI',
+      attachement: 'ATT'
+    };
+
+    const year = new Date().getFullYear();
+    const n = (window.nextDocNumbers[window.currentDocType] || 1);
+    const number = n.toString().padStart(3, '0');
+    const prefix = prefixes[window.currentDocType] || 'DOC';
+
+    const el = document.getElementById('doc-number');
+    if (el) el.value = `${prefix}-${year}-${number}`;
+  }
+
+  function extractNumberFromFormat(formattedNumber) {
+    const match = (formattedNumber || '').match(/\d+$/);
+    return match ? parseInt(match[0], 10) : null;
+  }
+
+  // ==================== TABLE ARTICLES ====================
+  function initItemsTable() {
+    const tbody = document.getElementById('items-body');
+    tbody.innerHTML = '';
+    addItemRow();
+  }
+
+  // ==================== EVENTS ====================
+  function initEvents() {
+    document.querySelectorAll('.doc-type-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.doc-type-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        window.currentDocType = this.dataset.type;
+        window.autoNumberEnabled = true;
+        updateDocumentNumber();
+        updateAmountLabel();
+        updateDocumentTypeDisplay();
+        updateModePaiementDisplay();
+      });
+    });
+
+    document.querySelectorAll('.print-type-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.print-type-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        window.currentPrintType = this.dataset.printType;
+      });
+    });
+
+    document.getElementById('add-item').addEventListener('click', function (e) {
+      e.preventDefault();
+      addItemRow(getRowTypeForDoc(window.currentDocType));
+    });
+
+    document.getElementById('save-doc').addEventListener('click', function (e) {
+      e.preventDefault();
+      saveDocument();
+    });
+
+    document.getElementById('new-doc').addEventListener('click', function (e) {
+      e.preventDefault();
+      newDocument();
+    });
+
+    document.getElementById('print-doc').addEventListener('click', function (e) {
+      e.preventDefault();
+      printDocument();
+    });
+
+    document.getElementById('auto-number').addEventListener('click', function (e) {
+      e.preventDefault();
+      generateAutoNumber();
+    });
+
+    document.querySelectorAll('input[name="global-tva"]').forEach(radio => {
+      radio.addEventListener('change', function () {
+        applyGlobalTVA(this.value);
+      });
+    });
+
+    const dn = document.getElementById('doc-number');
+    dn.addEventListener('focus', () => (window.autoNumberEnabled = false));
+    dn.addEventListener('input', () => (window.autoNumberEnabled = false));
+
+    // logo/cachet/signature mode
+    const logoUpload = document.getElementById('logo-upload');
+    const stampUpload = document.getElementById('stamp-upload');
+
+    logoUpload.addEventListener('change', (e) => handleImageUpload(e, 'logo'));
+    stampUpload.addEventListener('change', (e) => handleImageUpload(e, 'stamp'));
+
+    document.querySelectorAll('input[name="signature-mode"]').forEach(r => {
+      r.addEventListener('change', function () {
+        window.signatureMode = this.value;
+        saveToStorage();
+      });
+    });
+
+    document.getElementById('clear-logo').addEventListener('click', function () {
+      window.printLogoDataUrl = '';
+      saveToStorage();
+      hydratePrintAssetsUI();
+      alert("Logo supprimé.");
+    });
+
+    document.getElementById('clear-stamp').addEventListener('click', function () {
+      window.printStampDataUrl = '';
+      saveToStorage();
+      hydratePrintAssetsUI();
+      alert("Cachet supprimé.");
+    });
+  }
+
+  function getRowTypeForDoc(type) {
+    if (type === 'acompte') return 'acompte';
+    if (type === 'livraison') return 'livraison';
+    if (type === 'intervention') return 'intervention';
+    if (type === 'attachement') return 'attachement';
+    return 'standard';
+  }
+
+  // ==================== Upload image -> DataURL ====================
+  function handleImageUpload(event, kind) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert("Veuillez choisir une image.");
+      event.target.value = '';
+      return;
+    }
+
+    const MAX_BYTES = 700 * 1024; // 700KB
+    if (file.size > MAX_BYTES) {
+      alert("Image trop grande. Merci de choisir une image plus légère (moins de ~700KB).");
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function () {
+      const dataUrl = reader.result;
+      if (kind === 'logo') window.printLogoDataUrl = dataUrl;
+      if (kind === 'stamp') window.printStampDataUrl = dataUrl;
+      saveToStorage();
+      hydratePrintAssetsUI();
+      alert(kind === 'logo' ? "Logo enregistré !" : "Cachet enregistré !");
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function hydratePrintAssetsUI() {
+    const logoPreview = document.getElementById('logo-preview');
+    const stampPreview = document.getElementById('stamp-preview');
+
+    logoPreview.src = window.printLogoDataUrl || '';
+    stampPreview.src = window.printStampDataUrl || '';
+
+    if (!window.printLogoDataUrl) logoPreview.removeAttribute('src');
+    if (!window.printStampDataUrl) stampPreview.removeAttribute('src');
+
+    const mode = window.signatureMode || 'electronic';
+    const r = document.querySelector(`input[name="signature-mode"][value="${mode}"]`);
+    if (r) r.checked = true;
+  }
+
+  // ==================== AFFICHAGE PAR TYPE ====================
+  function updateDocumentTypeDisplay() {
+    const headers = document.getElementById('table-headers');
+    const tvaOptions = document.getElementById('tva-options');
+    const totalsSection = document.getElementById('totals-section');
+    const amountWordsSection = document.getElementById('amount-words-section');
+
+    const tbody = document.getElementById('items-body');
+    tbody.innerHTML = '';
+
+    switch (window.currentDocType) {
+      case 'facture':
+      case 'devis':
+      case 'commande':
+        headers.innerHTML = `
+          <th width="40%">DÉSIGNATION</th>
+          <th width="8%">UNITE</th>
+          <th width="12%">QUANTITÉ</th>
+          <th width="15%">PRIX UNITAIRE HT</th>
+          <th width="10%">TVA</th>
+          <th width="10%">MONTANT HT</th>
+          <th width="5%"></th>
+        `;
+        tvaOptions.classList.remove('hidden');
+        totalsSection.classList.remove('hidden');
+        amountWordsSection.classList.remove('hidden');
+        addItemRow('standard');
+        break;
+
+      case 'acompte':
+        headers.innerHTML = `
+          <th width="70%">DÉSIGNATION</th>
+          <th width="25%">MONTANT HT</th>
+          <th width="5%"></th>
+        `;
+        tvaOptions.classList.remove('hidden');
+        totalsSection.classList.remove('hidden');
+        amountWordsSection.classList.remove('hidden');
+        addItemRow('acompte');
+        break;
+
+      case 'livraison':
+        headers.innerHTML = `
+          <th width="60%">DÉSIGNATION</th>
+          <th width="15%">UNITE</th>
+          <th width="20%">QUANTITÉ</th>
+          <th width="5%"></th>
+        `;
+        tvaOptions.classList.add('hidden');
+        totalsSection.classList.add('hidden');
+        amountWordsSection.classList.add('hidden');
+        addItemRow('livraison');
+        break;
+
+      case 'intervention':
+        headers.innerHTML = `
+          <th width="45%">NATURE DES TRAVAUX</th>
+          <th width="10%">UNITE</th>
+          <th width="15%">QUANTITÉ</th>
+          <th width="15%">AVANCEMENT</th>
+          <th width="10%">OBSERVATIONS</th>
+          <th width="5%"></th>
+        `;
+        tvaOptions.classList.add('hidden');
+        totalsSection.classList.add('hidden');
+        amountWordsSection.classList.add('hidden');
+        addItemRow('intervention');
+        break;
+
+      case 'attachement':
+        headers.innerHTML = `
+          <th width="85%">DÉSIGNATION</th>
+          <th width="10%">AVANCEMENT</th>
+          <th width="5%"></th>
+        `;
+        tvaOptions.classList.add('hidden');
+        totalsSection.classList.add('hidden');
+        amountWordsSection.classList.add('hidden');
+        addItemRow('attachement');
+        break;
+    }
+
+    updateAmountLabel();
+    if (['facture', 'devis', 'commande', 'acompte'].includes(window.currentDocType)) {
+      calculateTotals();
+    }
+  }
+
+  // ==================== MODE PAIEMENT ====================
+  function updateModePaiementDisplay() {
+    const modePaiementGroup = document.getElementById('mode-paiement-group');
+    const modePaiementSelect = modePaiementGroup.querySelector('select');
+
+    if (window.currentDocType === 'facture' || window.currentDocType === 'acompte') {
+      modePaiementGroup.classList.remove('removed');
+      modePaiementSelect.disabled = false;
+    } else {
+      modePaiementGroup.classList.add('removed');
+      modePaiementSelect.disabled = true;
+    }
+  }
+
+  // ==================== LIBELLÉ ====================
+  function updateAmountLabel() {
+    const labels = {
+      facture: "Arrêté la présente facture à la somme de :",
+      acompte: "Arrêté la présente facture d'acompte à la somme de :",
+      devis: "Arrêté le présent devis à la somme de :",
+      commande: "Arrêté le présent bon de commande à la somme de :",
+      livraison: "Arrêté le présent bon de livraison :",
+      intervention: "Arrêté le présent bon d'intervention :",
+      attachement: "Attachement :"
+    };
+    document.getElementById('amount-label').textContent =
+      labels[window.currentDocType] || "Arrêté le présent document :";
+  }
+
+  // ==================== LIGNES ====================
+  function addItemRow(type = 'standard') {
+    const tbody = document.getElementById('items-body');
+    const rowId = Date.now() + Math.floor(Math.random() * 1000);
+
+    let rowHTML = '';
+
+    switch (type) {
+      case 'standard':
+        rowHTML = `
+          <td><input type="text" class="item-desc" placeholder="Description" data-id="${rowId}"></td>
+          <td>
+            <select class="item-unit" data-id="${rowId}">
+              <option value="u">Unité (u)</option>
+              <option value="ft">Farde (ft)</option>
+              <option value="h">Heure (h)</option>
+              <option value="j">Jour (j)</option>
+              <option value="kg">Kilogramme (kg)</option>
+              <option value="g">Gramme (g)</option>
+              <option value="m">Mètre (m)</option>
+              <option value="cm">Centimètre (cm)</option>
+              <option value="m2">Mètre carré (m²)</option>
+              <option value="m3">Mètre cube (m³)</option>
+              <option value="l">Litre (l)</option>
+              <option value="ml">Mètre linéaire (ml)</option>
+              <option value="pce">Pièce (pce)</option>
+              <option value="lot">Lot</option>
+              <option value="forfait">Forfait</option>
+              <option value="paquet">Paquet</option>
+              <option value="boite">Boîte</option>
+              <option value="carton">Carton</option>
+              <option value="palette">Palette</option>
+              <option value="colis">Colis</option>
+              <option value="service">Service</option>
+              <option value="mois">Mois</option>
+              <option value="an">An</option>
+            </select>
+          </td>
+          <td><input type="number" class="item-qty" value="1" min="0" step="0.01" data-id="${rowId}"></td>
+          <td><input type="number" class="item-price" value="0" min="0" step="0.01" data-id="${rowId}"></td>
+          <td>
+            <select class="item-tva" data-id="${rowId}">
+              <option value="0.20">20%</option>
+              <option value="0.14">14%</option>
+              <option value="0.10">10%</option>
+              <option value="0.07">7%</option>
+              <option value="0.00">0%</option>
+            </select>
+          </td>
+          <td><input type="number" class="item-total" value="0" readonly></td>
+          <td><button type="button" class="btn btn-danger" data-remove="${rowId}">✕</button></td>
+        `;
+        break;
+
+      case 'acompte':
+        rowHTML = `
+          <td><input type="text" class="item-desc" placeholder="Description de l'acompte" data-id="${rowId}"></td>
+          <td><input type="number" class="item-montant" value="0" min="0" step="0.01" data-id="${rowId}" placeholder="Montant HT"></td>
+          <td><button type="button" class="btn btn-danger" data-remove="${rowId}">✕</button></td>
+        `;
+        break;
+
+      case 'livraison':
+        rowHTML = `
+          <td><input type="text" class="item-desc" placeholder="Description" data-id="${rowId}"></td>
+          <td>
+            <select class="item-unit" data-id="${rowId}">
+              <option value="u">Unité (u)</option>
+              <option value="ft">Farde (ft)</option>
+              <option value="kg">Kilogramme (kg)</option>
+              <option value="g">Gramme (g)</option>
+              <option value="m">Mètre (m)</option>
+              <option value="cm">Centimètre (cm)</option>
+              <option value="m2">Mètre carré (m²)</option>
+              <option value="m3">Mètre cube (m³)</option>
+              <option value="l">Litre (l)</option>
+              <option value="ml">Mètre linéaire (ml)</option>
+              <option value="pce">Pièce (pce)</option>
+              <option value="lot">Lot</option>
+              <option value="paquet">Paquet</option>
+              <option value="boite">Boîte</option>
+              <option value="carton">Carton</option>
+              <option value="colis">Colis</option>
+            </select>
+          </td>
+          <td><input type="number" class="item-qty" value="1" min="0" step="0.01" data-id="${rowId}"></td>
+          <td><button type="button" class="btn btn-danger" data-remove="${rowId}">✕</button></td>
+        `;
+        break;
+
+      case 'intervention':
+        rowHTML = `
+          <td><input type="text" class="item-desc" placeholder="Nature des travaux" data-id="${rowId}"></td>
+          <td>
+            <select class="item-unit" data-id="${rowId}">
+              <option value="u">Unité (u)</option>
+              <option value="h">Heure (h)</option>
+              <option value="j">Jour (j)</option>
+              <option value="m2">Mètre carré (m²)</option>
+              <option value="ml">Mètre linéaire (ml)</option>
+              <option value="forfait">Forfait</option>
+              <option value="service">Service</option>
+              <option value="mois">Mois</option>
+              <option value="an">An</option>
+            </select>
+          </td>
+          <td><input type="number" class="item-qty" value="1" min="0" step="0.01" data-id="${rowId}"></td>
+          <td>
+            <select class="item-avancement" data-id="${rowId}">
+              <option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option>
+              <option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option>
+              <option value="80">80%</option><option value="90">90%</option><option value="100">100%</option>
+            </select>
+          </td>
+          <td><input type="text" class="item-observations" placeholder="Observations" data-id="${rowId}"></td>
+          <td><button type="button" class="btn btn-danger" data-remove="${rowId}">✕</button></td>
+        `;
+        break;
+
+      case 'attachement':
+        rowHTML = `
+          <td><input type="text" class="item-desc" placeholder="Désignation" data-id="${rowId}"></td>
+          <td>
+            <select class="item-avancement" data-id="${rowId}">
+              <option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option>
+              <option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option>
+              <option value="80">80%</option><option value="90">90%</option><option value="100">100%</option>
+            </select>
+          </td>
+          <td><button type="button" class="btn btn-danger" data-remove="${rowId}">✕</button></td>
+        `;
+        break;
+    }
+
+    const row = document.createElement('tr');
+    row.innerHTML = rowHTML;
+    tbody.appendChild(row);
+
+    const removeBtn = row.querySelector(`[data-remove="${rowId}"]`);
+    if (removeBtn) removeBtn.addEventListener('click', () => removeItem(rowId));
+
+    if (type === 'standard') {
+      const selectedTVA = document.querySelector('input[name="global-tva"]:checked')?.value || "0.20";
+      const tvaSelect = row.querySelector('.item-tva');
+      if (tvaSelect) tvaSelect.value = selectedTVA;
+
+      ['.item-desc','.item-unit','.item-qty','.item-price','.item-tva'].forEach(sel => {
+        const el = row.querySelector(sel);
+        if (el) el.addEventListener('input', () => updateItem(rowId));
+        if (el) el.addEventListener('change', () => updateItem(rowId));
+      });
+
+      updateItem(rowId);
+    } else if (type === 'acompte') {
+      ['.item-desc','.item-montant'].forEach(sel => {
+        const el = row.querySelector(sel);
+        if (el) el.addEventListener('input', () => updateAcompteItem(rowId));
+      });
+      updateAcompteItem(rowId);
+    }
+  }
+
+  function updateItem(id) {
+    if (!['facture','devis','commande'].includes(window.currentDocType)) return;
+    const anyEl = document.querySelector(`[data-id="${id}"]`);
+    if (!anyEl) return;
+    const row = anyEl.closest('tr');
+    if (!row) return;
+
+    const qty = parseFloat(row.querySelector('.item-qty')?.value) || 0;
+    const price = parseFloat(row.querySelector('.item-price')?.value) || 0;
+    const total = qty * price;
+
+    const totalEl = row.querySelector('.item-total');
+    if (totalEl) totalEl.value = total.toFixed(2);
+
+    calculateTotals();
+  }
+
+  function updateAcompteItem(id) {
+    if (window.currentDocType !== 'acompte') return;
+    calculateTotals();
+  }
+
+  function removeItem(id) {
+    const el = document.querySelector(`[data-id="${id}"]`);
+    const btn = document.querySelector(`[data-remove="${id}"]`);
+    const row = (el && el.closest('tr')) || (btn && btn.closest('tr'));
+    if (!row) return;
+
+    const count = document.querySelectorAll('#items-body tr').length;
+    if (count > 1) {
+      row.remove();
+      if (['facture','devis','commande','acompte'].includes(window.currentDocType)) calculateTotals();
+    } else {
+      alert('Vous devez avoir au moins une ligne');
+    }
+  }
+
+  function applyGlobalTVA(rate) {
+    if (!['facture','devis','commande'].includes(window.currentDocType)) {
+      if (window.currentDocType === 'acompte') calculateTotals();
+      return;
+    }
+    document.querySelectorAll('#items-body .item-tva').forEach(select => {
+      select.value = rate;
+      const rowId = select.getAttribute('data-id');
+      if (rowId) updateItem(rowId);
+    });
+  }
+
+  // ==================== CALCULS ====================
+  function calculateTotals() {
+    if (!['facture','devis','commande','acompte'].includes(window.currentDocType)) return;
+
+    let totalHT = 0;
+    let totalTVA = 0;
+
+    if (window.currentDocType === 'acompte') {
+      const tvaRate = parseFloat(document.querySelector('input[name="global-tva"]:checked')?.value || "0.20") || 0;
+      document.querySelectorAll('#items-body tr').forEach(row => {
+        const montant = parseFloat(row.querySelector('.item-montant')?.value) || 0;
+        totalHT += montant;
+        totalTVA += montant * tvaRate;
+      });
+    } else {
+      document.querySelectorAll('#items-body tr').forEach(row => {
+        const qty = parseFloat(row.querySelector('.item-qty')?.value) || 0;
+        const price = parseFloat(row.querySelector('.item-price')?.value) || 0;
+        const tvaRate = parseFloat(row.querySelector('.item-tva')?.value) || 0;
+        const itemHT = qty * price;
+        const itemTVA = itemHT * tvaRate;
+        totalHT += itemHT;
+        totalTVA += itemTVA;
+      });
+    }
+
+    const totalTTC = totalHT + totalTVA;
+
+    document.getElementById('total-ht').textContent = totalHT.toFixed(2) + ' DH';
+    document.getElementById('total-tva').textContent = totalTVA.toFixed(2) + ' DH';
+    document.getElementById('total-ttc').textContent = totalTTC.toFixed(2) + ' DH';
+
+    updateAmountInWords(totalTTC);
+  }
+
+  function updateAmountInWords(amount) {
+    if (!['facture','devis','commande','acompte'].includes(window.currentDocType)) return;
+    document.getElementById('amount-in-words').textContent = convertNumberToWords(amount);
+  }
+
+  function convertNumberToWords(num) {
+    const units = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf'];
+    const teens = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize', 'dix-sept', 'dix-huit', 'dix-neuf'];
+    const tens = ['', '', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante', 'quatre-vingt', 'quatre-vingt'];
+
+    function convert(n) {
+      if (n === 0) return 'zéro';
+      let result = '';
+
+      if (n >= 1000000) {
+        const m = Math.floor(n / 1000000);
+        result += (m === 1 ? 'un million' : convert(m) + ' millions');
+        const r = n % 1000000;
+        if (r > 0) result += ' ' + convert(r);
+        return result.trim();
+      }
+
+      if (n >= 1000) {
+        const k = Math.floor(n / 1000);
+        result += (k === 1 ? 'mille' : convert(k) + ' mille');
+        const r = n % 1000;
+        if (r > 0) result += ' ' + convert(r);
+        return result.trim();
+      }
+
+      if (n >= 100) {
+        const h = Math.floor(n / 100);
+        result += (h === 1 ? 'cent' : units[h] + ' cents');
+        const r = n % 100;
+        if (r > 0) result += ' ' + convert(r);
+        return result.trim();
+      }
+
+      if (n >= 20) {
+        const t = Math.floor(n / 10);
+        const u = n % 10;
+
+        if (t === 7 || t === 9) {
+          const base = (t === 7) ? 'soixante' : 'quatre-vingt';
+          const rem = u + 10;
+          result += base + '-' + (rem === 10 ? 'dix' : teens[rem - 10]);
+        } else {
+          result += tens[t];
+          if (u > 0) {
+            result += (u === 1 && t !== 8) ? ' et ' + units[u] : '-' + units[u];
+          } else if (t === 8) {
+            result += 's';
+          }
+        }
+        return result;
+      }
+
+      if (n >= 10) return teens[n - 10];
+      return units[n];
+    }
+
+    const integerPart = Math.floor(num);
+    const decimalPart = Math.round((num - integerPart) * 100);
+
+    let result = integerPart > 0 ? convert(integerPart) + (integerPart > 1 ? ' Dirhams' : ' Dirham') : 'zéro Dirham';
+
+    if (decimalPart > 0) {
+      const centimesText = convert(decimalPart);
+      result += (integerPart > 0 ? ' et ' : ' ') + centimesText + (decimalPart > 1 ? ' centimes' : ' centime');
+    }
+
+    return result.charAt(0).toUpperCase() + result.slice(1);
+  }
+
+  // ==================== DOCUMENTS ====================
+  function saveDocument() {
+    const clientName = document.getElementById('client-name').value.trim();
+    const clientICE = document.getElementById('client-ice').value.trim();
+    const docNumber = document.getElementById('doc-number').value.trim();
+    const docDate = document.getElementById('doc-date').value;
+
+    if (!clientName || !clientICE || !docNumber || !docDate) {
+      alert('Veuillez remplir tous les champs obligatoires (*)');
+      return;
+    }
+
+    const isDuplicate = window.documents.some(doc => doc.type === window.currentDocType && doc.number === docNumber);
+    if (isDuplicate) {
+      const ok = confirm(`Le numéro ${docNumber} existe déjà pour ce type de document. Voulez-vous l'utiliser quand même ?`);
+      if (!ok) return;
+    }
+
+    const items = [];
+    let totals = null;
+    let amountInWords = '';
+    let modePaiement = '';
+
+    if (window.currentDocType === 'facture' || window.currentDocType === 'acompte') {
+      modePaiement = document.getElementById('doc-mode-paiement').value;
+    }
+
+    const amountLabel = document.getElementById('amount-label').textContent;
+
+    switch (window.currentDocType) {
+      case 'facture':
+      case 'devis':
+      case 'commande':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+
+          const unitSelect = row.querySelector('.item-unit');
+          const unitValue = unitSelect?.value || 'u';
+          const unitText = unitSelect?.options[unitSelect.selectedIndex]?.text || 'Unité (u)';
+
+          items.push({
+            type: 'standard',
+            designation: desc,
+            unit: unitValue,
+            unitText: unitText,
+            quantity: parseFloat(row.querySelector('.item-qty')?.value) || 0,
+            price: parseFloat(row.querySelector('.item-price')?.value) || 0,
+            tvaRate: parseFloat(row.querySelector('.item-tva')?.value) || 0,
+            total: parseFloat(row.querySelector('.item-total')?.value) || 0
+          });
+        });
+
+        if (items.length === 0) { alert('Veuillez ajouter au moins un article'); return; }
+
+        calculateTotals();
+        totals = {
+          ht: parseFloat(document.getElementById('total-ht').textContent) || 0,
+          tva: parseFloat(document.getElementById('total-tva').textContent) || 0,
+          ttc: parseFloat(document.getElementById('total-ttc').textContent) || 0
+        };
+        amountInWords = document.getElementById('amount-in-words').textContent;
+        break;
+
+      case 'acompte': {
+        const tvaRate = parseFloat(document.querySelector('input[name="global-tva"]:checked')?.value || "0.20") || 0;
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+          const montant = parseFloat(row.querySelector('.item-montant')?.value) || 0;
+          items.push({
+            type: 'acompte',
+            designation: desc,
+            montant: montant,
+            tvaRate: tvaRate,
+            total: montant + (montant * tvaRate)
+          });
+        });
+
+        if (items.length === 0) { alert('Veuillez ajouter au moins un acompte'); return; }
+
+        calculateTotals();
+        totals = {
+          ht: parseFloat(document.getElementById('total-ht').textContent) || 0,
+          tva: parseFloat(document.getElementById('total-tva').textContent) || 0,
+          ttc: parseFloat(document.getElementById('total-ttc').textContent) || 0
+        };
+        amountInWords = document.getElementById('amount-in-words').textContent;
+        break;
+      }
+
+      case 'livraison':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+
+          const unitSelect = row.querySelector('.item-unit');
+          const unitValue = unitSelect?.value || 'u';
+          const unitText = unitSelect?.options[unitSelect.selectedIndex]?.text || 'Unité (u)';
+
+          items.push({
+            type: 'livraison',
+            designation: desc,
+            unit: unitValue,
+            unitText: unitText,
+            quantity: parseFloat(row.querySelector('.item-qty')?.value) || 0
+          });
+        });
+
+        if (items.length === 0) { alert('Veuillez ajouter au moins un article'); return; }
+        break;
+
+      case 'intervention':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+
+          const unitSelect = row.querySelector('.item-unit');
+          const unitValue = unitSelect?.value || 'u';
+          const unitText = unitSelect?.options[unitSelect.selectedIndex]?.text || 'Unité (u)';
+          const avancement = parseFloat(row.querySelector('.item-avancement')?.value) || 0;
+          const observations = row.querySelector('.item-observations')?.value.trim() || '';
+
+          items.push({
+            type: 'intervention',
+            designation: desc,
+            unit: unitValue,
+            unitText: unitText,
+            quantity: parseFloat(row.querySelector('.item-qty')?.value) || 0,
+            avancement: avancement,
+            observations: observations
+          });
+        });
+
+        if (items.length === 0) { alert('Veuillez ajouter au moins une ligne'); return; }
+        break;
+
+      case 'attachement':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+          const avancement = parseFloat(row.querySelector('.item-avancement')?.value) || 0;
+
+          items.push({
+            type: 'attachement',
+            designation: desc,
+            avancement: avancement
+          });
+        });
+
+        if (items.length === 0) { alert('Veuillez ajouter au moins une ligne'); return; }
+        break;
+    }
+
+    const documentData = {
+      id: Date.now(),
+      type: window.currentDocType,
+      number: docNumber,
+      date: docDate,
+      reference: document.getElementById('doc-reference').value,
+      modePaiement: modePaiement,
+      client: {
+        name: clientName,
+        address: document.getElementById('client-address').value,
+        phone: document.getElementById('client-phone').value,
+        ice: clientICE
+      },
+      items: items,
+      totals: totals,
+      amountInWords: amountInWords,
+      amountLabel: amountLabel,
+      createdAt: new Date().toISOString(),
+      isEdited: window.isEditing
+    };
+
+    const extractedNumber = extractNumberFromFormat(docNumber);
+    if (extractedNumber && window.autoNumberEnabled) {
+      if (extractedNumber >= (window.nextDocNumbers[window.currentDocType] || 1)) {
+        window.nextDocNumbers[window.currentDocType] = extractedNumber + 1;
+      }
+    }
+
+    window.documents.unshift(documentData);
+    window.isEditing = false;
+
+    saveToStorage();
+    if (window.autoNumberEnabled) updateDocumentNumber();
+    displaySavedDocuments();
+
+    alert('✅ Document enregistré avec succès !');
+  }
+
+  function newDocument() {
+    if (!confirm('Créer un nouveau document ? Les données non sauvegardées seront perdues.')) return;
+
+    document.getElementById('client-name').value = '';
+    document.getElementById('client-address').value = '';
+    document.getElementById('client-phone').value = '';
+    document.getElementById('client-ice').value = '';
+    document.getElementById('doc-reference').value = '';
+    document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
+
+    updateDocumentTypeDisplay();
+    if (['facture','devis','commande','acompte'].includes(window.currentDocType)) calculateTotals();
+
+    window.autoNumberEnabled = true;
+    updateDocumentNumber();
+    updateAmountLabel();
+    updateModePaiementDisplay();
+    window.isEditing = false;
+  }
+
+  function displaySavedDocuments() {
+    const tbody = document.getElementById('saved-docs');
+
+    if (!window.documents || window.documents.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:#64748B;">Aucun document enregistré</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+
+    const typeNames = {
+      facture: 'Facture',
+      acompte: 'Facture Acompte',
+      devis: 'Devis',
+      commande: 'Commande',
+      livraison: 'Livraison',
+      intervention: 'Intervention',
+      attachement: 'Attachement'
+    };
+
+    window.documents.forEach(doc => {
+      const date = new Date(doc.date).toLocaleDateString('fr-FR');
+      const montant = doc.totals ? `${(doc.totals.ttc || 0).toFixed(2)} DH` : '-';
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><strong>${typeNames[doc.type] || doc.type}</strong></td>
+        <td><strong style="color:#1E3A8A;">${doc.number}</strong></td>
+        <td>${date}</td>
+        <td>${doc.client?.name || ''}</td>
+        <td><strong style="color:#059669;">${montant}</strong></td>
+        <td>
+          <div class="action-buttons">
+            <button type="button" class="action-btn view" data-view="${doc.id}" title="Voir">👁</button>
+            <button type="button" class="action-btn edit" data-edit="${doc.id}" title="Modifier">✏</button>
+            <button type="button" class="action-btn delete" data-del="${doc.id}" title="Supprimer">🗑</button>
+            <button type="button" class="action-btn print" data-print="${doc.id}" title="Imprimer">🖨</button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(row);
+
+      row.querySelector(`[data-view="${doc.id}"]`).addEventListener('click', () => viewDocument(doc.id));
+      row.querySelector(`[data-edit="${doc.id}"]`).addEventListener('click', () => editDocument(doc.id));
+      row.querySelector(`[data-del="${doc.id}"]`).addEventListener('click', () => deleteDocument(doc.id));
+      row.querySelector(`[data-print="${doc.id}"]`).addEventListener('click', () => printSavedDocument(doc.id));
+    });
+  }
+
+  function viewDocument(id) {
+    const doc = window.documents.find(d => d.id === id);
+    if (!doc) return;
+
+    let info = `Document: ${doc.number}\nClient: ${doc.client?.name || ''}\nDate: ${new Date(doc.date).toLocaleDateString('fr-FR')}`;
+    if (doc.totals) {
+      info += `\nMontant: ${(doc.totals.ttc || 0).toFixed(2)} DH`;
+      if (doc.amountInWords) info += `\nEn lettres: ${doc.amountInWords}`;
+    }
+    alert(info);
+  }
+
+  function editDocument(id) {
+    const docIndex = window.documents.findIndex(d => d.id === id);
+    if (docIndex === -1) return;
+    const doc = window.documents[docIndex];
+
+    document.querySelectorAll('.doc-type-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.type === doc.type) {
+        btn.classList.add('active');
+        window.currentDocType = doc.type;
+      }
+    });
+
+    window.isEditing = true;
+    updateDocumentTypeDisplay();
+
+    document.getElementById('client-name').value = doc.client?.name || '';
+    document.getElementById('client-address').value = doc.client?.address || '';
+    document.getElementById('client-phone').value = doc.client?.phone || '';
+    document.getElementById('client-ice').value = doc.client?.ice || '';
+    document.getElementById('doc-number').value = doc.number || '';
+    document.getElementById('doc-date').value = doc.date || '';
+    document.getElementById('doc-reference').value = doc.reference || '';
+
+    if (doc.modePaiement) document.getElementById('doc-mode-paiement').value = doc.modePaiement;
+
+    window.autoNumberEnabled = false;
+
+    const tbody = document.getElementById('items-body');
+    tbody.innerHTML = '';
+
+    (doc.items || []).forEach(item => {
+      if (item.type === 'standard') {
+        addItemRow('standard');
+        const row = tbody.lastElementChild;
+        row.querySelector('.item-desc').value = item.designation || '';
+        row.querySelector('.item-unit').value = item.unit || 'u';
+        row.querySelector('.item-qty').value = item.quantity ?? 0;
+        row.querySelector('.item-price').value = item.price ?? 0;
+        row.querySelector('.item-tva').value = item.tvaRate ?? 0.20;
+        const rowId = row.querySelector('.item-desc').dataset.id;
+        updateItem(rowId);
+      } else if (item.type === 'acompte') {
+        addItemRow('acompte');
+        const row = tbody.lastElementChild;
+        row.querySelector('.item-desc').value = item.designation || '';
+        row.querySelector('.item-montant').value = item.montant ?? 0;
+        const v = (item.tvaRate ?? 0.20).toFixed(2);
+        const radio = document.querySelector(`input[name="global-tva"][value="${v}"]`);
+        if (radio) radio.checked = true;
+      } else if (item.type === 'livraison') {
+        addItemRow('livraison');
+        const row = tbody.lastElementChild;
+        row.querySelector('.item-desc').value = item.designation || '';
+        row.querySelector('.item-unit').value = item.unit || 'u';
+        row.querySelector('.item-qty').value = item.quantity ?? 0;
+      } else if (item.type === 'intervention') {
+        addItemRow('intervention');
+        const row = tbody.lastElementChild;
+        row.querySelector('.item-desc').value = item.designation || '';
+        row.querySelector('.item-unit').value = item.unit || 'u';
+        row.querySelector('.item-qty').value = item.quantity ?? 0;
+        row.querySelector('.item-avancement').value = item.avancement ?? 0;
+        row.querySelector('.item-observations').value = item.observations || '';
+      } else if (item.type === 'attachement') {
+        addItemRow('attachement');
+        const row = tbody.lastElementChild;
+        row.querySelector('.item-desc').value = item.designation || '';
+        row.querySelector('.item-avancement').value = item.avancement ?? 0;
+      }
+    });
+
+    window.documents.splice(docIndex, 1);
+    saveToStorage();
+    displaySavedDocuments();
+
+    updateAmountLabel();
+    updateModePaiementDisplay();
+    if (['facture','devis','commande','acompte'].includes(window.currentDocType)) calculateTotals();
+
+    alert('Document chargé pour modification');
+  }
+
+  function deleteDocument(id) {
+    if (!confirm('Supprimer ce document ?')) return;
+    window.documents = window.documents.filter(d => d.id !== id);
+    saveToStorage();
+    displaySavedDocuments();
+    alert('Document supprimé');
+  }
+
+  // ==================== IMPRESSION ====================
+  function validateForPrint() {
+    const clientName = document.getElementById('client-name').value.trim();
+    const clientICE = document.getElementById('client-ice').value.trim();
+    if (!clientName || !clientICE) {
+      alert("Veuillez remplir le nom du client et l'ICE avant d'imprimer");
+      return false;
+    }
+    return true;
+  }
+
+  function printDocument() {
+    if (!validateForPrint()) return;
+    generatePrintContent();
+    setTimeout(() => window.print(), 100);
+  }
+
+  function printSavedDocument(id) {
+    const doc = window.documents.find(d => d.id === id);
+    if (!doc) return;
+    generatePrintContent(doc);
+    setTimeout(() => window.print(), 100);
+  }
+
+  // ✅ Suite footer seulement à partir page 2
+  function makeSuiteFooterHTML(pageIndex, totalPages, docTitle) {
+    if (pageIndex <= 1) return '';
+    return `
+      <div style="
+        position:absolute;
+        bottom:0.2cm;
+        right:0.5cm;
+        font-size:10px;
+        color:#1E3A8A;
+        background:#FFFBEB;
+        border:1px solid #FBBF24;
+        padding:4px 8px;
+        border-radius:6px;">
+        Suite du document: <strong>${escapeHtml(docTitle)}</strong> — Page <strong>${pageIndex}/${totalPages}</strong>
+      </div>
+    `;
+  }
+
+  function generatePrintContent(doc = null) {
+    const printArea = document.getElementById('print-area');
+    if (!doc) doc = createDocumentFromForm();
+
+    const typeNames = {
+      facture: 'FACTURE',
+      acompte: "FACTURE D'ACOMPTE",
+      devis: 'DEVIS',
+      commande: 'BON DE COMMANDE',
+      livraison: 'BON DE LIVRAISON',
+      intervention: "BON D'INTERVENTION",
+      attachement: 'ATTACHEMENT'
+    };
+
+    const docTitle = typeNames[doc.type] || (doc.type || '').toUpperCase();
+    const date = new Date(doc.date).toLocaleDateString('fr-FR');
+
+    // ✅ 1) Construire les lignes (HTML) selon type
+    const tablePack = buildPrintTablePack(doc);
+
+    // ✅ 2) Pagination 12 lignes/page
+    const rows = tablePack.rows;
+    const totalPages = Math.max(1, Math.ceil(rows.length / LINES_PER_PAGE));
+
+    // ✅ 3) Totaux + montant en lettres => seulement sur dernière page (si applicable)
+    const shouldShowTotals = ['facture','devis','commande','acompte'].includes(doc.type);
+    const totalsHTML = shouldShowTotals ? generateTotalsHTML(doc) : '';
+    const amountWordsHTML = shouldShowTotals ? generateAmountWordsHTML(doc) : '';
+
+    let allPagesHTML = '';
+
+    for (let p = 1; p <= totalPages; p++) {
+      const start = (p - 1) * LINES_PER_PAGE;
+      const end = start + LINES_PER_PAGE;
+      const pageRows = rows.slice(start, end);
+      const isLast = (p === totalPages);
+
+      const suiteFooter = makeSuiteFooterHTML(p, totalPages, docTitle);
+      const suiteUnderNumber = (p > 1)
+        ? `<div style="margin-top:4px;font-size:12px;font-weight:800;color:#DC2626;letter-spacing:1px;">SUITE</div>`
+        : '';
+
+      const tableHTML = `${tablePack.thead}<tbody>${pageRows.join('')}</tbody>`;
+
+      // Sur pages 1..n-1 : pas de totaux/lettres/signature/cachet
+      const pageTotalsHTML = (isLast ? totalsHTML : '');
+      const pageAmountWordsHTML = (isLast ? amountWordsHTML : '');
+
+      if (window.currentPrintType === 'with-header') {
+        allPagesHTML += createPrintWithHeader(
+          docTitle, date, doc,
+          tableHTML, pageTotalsHTML, pageAmountWordsHTML,
+          suiteFooter, suiteUnderNumber,
+          isLast // allowSignature uniquement dernière page
+        );
+      } else {
+        allPagesHTML += createPrintWithoutHeader(
+          docTitle, date, doc,
+          tableHTML, pageTotalsHTML, pageAmountWordsHTML,
+          suiteFooter, suiteUnderNumber,
+          isLast // allowSignature uniquement dernière page
+        );
+      }
+    }
+
+    printArea.innerHTML = allPagesHTML;
+    printArea.style.display = 'block';
+  }
+
+  // Fabrique le thead + rows selon type (rows = array de <tr>...)
+  function buildPrintTablePack(doc) {
+    switch (doc.type) {
+      case 'facture':
+      case 'devis':
+      case 'commande':
+        return buildStandardPack(doc);
+
+      case 'acompte':
+        return buildAcomptePack(doc);
+
+      case 'livraison':
+        return buildLivraisonPack(doc);
+
+      case 'intervention':
+        return buildInterventionPack(doc);
+
+      case 'attachement':
+        return buildAttachementPack(doc);
+
+      default:
+        return buildStandardPack(doc);
+    }
+  }
+
+  function buildStandardPack(doc) {
+    const thead = `
+      <thead>
+        <tr style="background:linear-gradient(135deg,#FFD700 0%,#FBBF24 100%);color:#1E3A8A;">
+          <th style="padding:8px;text-align:left;border:1px solid #1E3A8A;font-size:11px;">DÉSIGNATION</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">UNITE</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">QUANTITÉ</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">PRIX UNITAIRE HT</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">TVA</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">MONTANT HT</th>
+        </tr>
+      </thead>
+    `;
+
+    const rows = (doc.items || []).map(item => `
+      <tr>
+        <td style="padding:6px;border:1px solid #CBD5E1;vertical-align:top;font-size:10px;">${escapeHtml(item.designation || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:center;vertical-align:top;font-size:10px;">${escapeHtml(item.unitText || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:right;vertical-align:top;font-size:10px;">${(item.quantity || 0).toFixed(2)}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:right;vertical-align:top;font-size:10px;">${(item.price || 0).toFixed(2)} DH</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:center;vertical-align:top;font-size:10px;">${((item.tvaRate || 0) * 100).toFixed(0)}%</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:right;vertical-align:top;font-size:10px;">${(item.total || 0).toFixed(2)} DH</td>
+      </tr>
+    `);
+
+    return { thead, rows };
+  }
+
+  function buildAcomptePack(doc) {
+    const thead = `
+      <thead>
+        <tr style="background:linear-gradient(135deg,#FFD700 0%,#FBBF24 100%);color:#1E3A8A;">
+          <th style="padding:8px;text-align:left;border:1px solid #1E3A8A;font-size:11px;">DÉSIGNATION</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">MONTANT HT</th>
+        </tr>
+      </thead>
+    `;
+
+    const rows = (doc.items || []).map(item => `
+      <tr>
+        <td style="padding:6px;border:1px solid #CBD5E1;vertical-align:top;font-size:10px;">${escapeHtml(item.designation || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:right;vertical-align:top;font-size:10px;">${(item.montant || 0).toFixed(2)} DH</td>
+      </tr>
+    `);
+
+    return { thead, rows };
+  }
+
+  function buildLivraisonPack(doc) {
+    const thead = `
+      <thead>
+        <tr style="background:linear-gradient(135deg,#FFD700 0%,#FBBF24 100%);color:#1E3A8A;">
+          <th style="padding:8px;text-align:left;border:1px solid #1E3A8A;font-size:11px;">DÉSIGNATION</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">UNITE</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">QUANTITÉ</th>
+        </tr>
+      </thead>
+    `;
+
+    const rows = (doc.items || []).map(item => `
+      <tr>
+        <td style="padding:6px;border:1px solid #CBD5E1;vertical-align:top;font-size:10px;">${escapeHtml(item.designation || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:center;vertical-align:top;font-size:10px;">${escapeHtml(item.unitText || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:right;vertical-align:top;font-size:10px;">${(item.quantity || 0).toFixed(2)}</td>
+      </tr>
+    `);
+
+    return { thead, rows };
+  }
+
+  function buildInterventionPack(doc) {
+    const thead = `
+      <thead>
+        <tr style="background:linear-gradient(135deg,#FFD700 0%,#FBBF24 100%);color:#1E3A8A;">
+          <th style="padding:8px;text-align:left;border:1px solid #1E3A8A;font-size:11px;">NATURE DES TRAVAUX</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">UNITE</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">QUANTITÉ</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">AVANCEMENT</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">OBSERVATIONS</th>
+        </tr>
+      </thead>
+    `;
+
+    const rows = (doc.items || []).map(item => `
+      <tr>
+        <td style="padding:6px;border:1px solid #CBD5E1;vertical-align:top;font-size:10px;">${escapeHtml(item.designation || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:center;vertical-align:top;font-size:10px;">${escapeHtml(item.unitText || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:right;vertical-align:top;font-size:10px;">${(item.quantity || 0).toFixed(2)}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:center;vertical-align:top;font-size:10px;">${(item.avancement || 0)}%</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;vertical-align:top;font-size:10px;">${escapeHtml(item.observations || '')}</td>
+      </tr>
+    `);
+
+    return { thead, rows };
+  }
+
+  function buildAttachementPack(doc) {
+    const thead = `
+      <thead>
+        <tr style="background:linear-gradient(135deg,#FFD700 0%,#FBBF24 100%);color:#1E3A8A;">
+          <th style="padding:8px;text-align:left;border:1px solid #1E3A8A;font-size:11px;">DÉSIGNATION</th>
+          <th style="padding:8px;border:1px solid #1E3A8A;font-size:11px;">AVANCEMENT</th>
+        </tr>
+      </thead>
+    `;
+
+    const rows = (doc.items || []).map(item => `
+      <tr>
+        <td style="padding:6px;border:1px solid #CBD5E1;vertical-align:top;font-size:10px;">${escapeHtml(item.designation || '')}</td>
+        <td style="padding:6px;border:1px solid #CBD5E1;text-align:center;vertical-align:top;font-size:10px;">${(item.avancement || 0)}%</td>
+      </tr>
+    `);
+
+    return { thead, rows };
+  }
+
+  function createDocumentFromForm() {
+    const doc = {
+      type: window.currentDocType,
+      number: document.getElementById('doc-number').value,
+      date: document.getElementById('doc-date').value,
+      reference: document.getElementById('doc-reference').value,
+      modePaiement: (window.currentDocType === 'facture' || window.currentDocType === 'acompte')
+        ? document.getElementById('doc-mode-paiement').value : '',
+      client: {
+        name: document.getElementById('client-name').value,
+        address: document.getElementById('client-address').value,
+        phone: document.getElementById('client-phone').value,
+        ice: document.getElementById('client-ice').value
+      },
+      items: [],
+      totals: null,
+      amountInWords: '',
+      amountLabel: document.getElementById('amount-label').textContent
+    };
+
+    switch (window.currentDocType) {
+      case 'facture':
+      case 'devis':
+      case 'commande':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+
+          const unitSelect = row.querySelector('.item-unit');
+          const unitText = unitSelect?.options[unitSelect.selectedIndex]?.text || '';
+
+          doc.items.push({
+            type: 'standard',
+            designation: desc,
+            unitText: unitText,
+            quantity: parseFloat(row.querySelector('.item-qty')?.value) || 0,
+            price: parseFloat(row.querySelector('.item-price')?.value) || 0,
+            tvaRate: parseFloat(row.querySelector('.item-tva')?.value) || 0,
+            total: parseFloat(row.querySelector('.item-total')?.value) || 0
+          });
+        });
+
+        doc.totals = {
+          ht: parseFloat(document.getElementById('total-ht').textContent) || 0,
+          tva: parseFloat(document.getElementById('total-tva').textContent) || 0,
+          ttc: parseFloat(document.getElementById('total-ttc').textContent) || 0
+        };
+        doc.amountInWords = document.getElementById('amount-in-words').textContent;
+        break;
+
+      case 'acompte': {
+        const tvaRate = parseFloat(document.querySelector('input[name="global-tva"]:checked')?.value || "0.20") || 0.20;
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+
+          const montant = parseFloat(row.querySelector('.item-montant')?.value) || 0;
+          doc.items.push({
+            type: 'acompte',
+            designation: desc,
+            montant: montant,
+            tvaRate: tvaRate,
+            total: montant + (montant * tvaRate)
+          });
+        });
+
+        doc.totals = {
+          ht: parseFloat(document.getElementById('total-ht').textContent) || 0,
+          tva: parseFloat(document.getElementById('total-tva').textContent) || 0,
+          ttc: parseFloat(document.getElementById('total-ttc').textContent) || 0
+        };
+        doc.amountInWords = document.getElementById('amount-in-words').textContent;
+        break;
+      }
+
+      case 'livraison':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+          const unitSelect = row.querySelector('.item-unit');
+          const unitText = unitSelect?.options[unitSelect.selectedIndex]?.text || '';
+          doc.items.push({
+            type: 'livraison',
+            designation: desc,
+            unitText: unitText,
+            quantity: parseFloat(row.querySelector('.item-qty')?.value) || 0
+          });
+        });
+        break;
+
+      case 'intervention':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+          const unitSelect = row.querySelector('.item-unit');
+          const unitText = unitSelect?.options[unitSelect.selectedIndex]?.text || '';
+          doc.items.push({
+            type: 'intervention',
+            designation: desc,
+            unitText: unitText,
+            quantity: parseFloat(row.querySelector('.item-qty')?.value) || 0,
+            avancement: parseFloat(row.querySelector('.item-avancement')?.value) || 0,
+            observations: row.querySelector('.item-observations')?.value.trim() || ''
+          });
+        });
+        break;
+
+      case 'attachement':
+        document.querySelectorAll('#items-body tr').forEach(row => {
+          const desc = row.querySelector('.item-desc')?.value.trim() || '';
+          if (!desc) return;
+          doc.items.push({
+            type: 'attachement',
+            designation: desc,
+            avancement: parseFloat(row.querySelector('.item-avancement')?.value) || 0
+          });
+        });
+        break;
+    }
+
+    return doc;
+  }
+
+  function generateTotalsHTML(doc) {
+    if (!doc.totals) return '';
+    return `
+      <div style="text-align:right;margin-top:20px;">
+        <table style="margin-left:auto;border-collapse:collapse;border:1px solid #1E3A8A;background:#FFFBEB;font-size:11px;">
+          <tr>
+            <td style="padding:8px;text-align:right;border:1px solid #1E3A8A;color:#1E3A8A;"><strong>Total HT:</strong></td>
+            <td style="padding:8px;text-align:right;font-weight:bold;border:1px solid #1E3A8A;color:#1E3A8A;">${(doc.totals.ht || 0).toFixed(2)} DH</td>
+          </tr>
+          <tr>
+            <td style="padding:8px;text-align:right;border:1px solid #1E3A8A;color:#1E3A8A;"><strong>TVA:</strong></td>
+            <td style="padding:8px;text-align:right;font-weight:bold;border:1px solid #1E3A8A;color:#1E3A8A;">${(doc.totals.tva || 0).toFixed(2)} DH</td>
+          </tr>
+          <tr style="background:linear-gradient(135deg,#FFD700 0%,#FBBF24 100%);">
+            <td style="padding:8px;text-align:right;font-size:12px;border:1px solid #1E3A8A;color:#1E3A8A;"><strong>Total TTC:</strong></td>
+            <td style="padding:8px;text-align:right;font-size:12px;font-weight:bold;border:1px solid #1E3A8A;color:#1E3A8A;">${(doc.totals.ttc || 0).toFixed(2)} DH</td>
+          </tr>
+        </table>
+      </div>
+    `;
+  }
+
+  function generateAmountWordsHTML(doc) {
+    if (!doc.amountInWords) return '';
+    return `
+      <div style="margin-top:20px;padding:12px;border:1px solid #FFD700;background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border-radius:6px;font-size:11px;">
+        <p style="margin:0;font-weight:bold;color:#1E3A8A;font-size:12px;">${escapeHtml(doc.amountLabel || '')}</p>
+        <p style="margin:5px 0 0 0;font-style:italic;color:#1E3A8A;font-size:11px;line-height:1.4;">${escapeHtml(doc.amountInWords || '')}</p>
+      </div>
+    `;
+  }
+
+  // ==================== PRINT LAYOUTS ====================
+  function createPrintWithHeader(docTitle, date, doc, tableHTML, totalsHTML, amountWordsHTML, suiteFooter, suiteUnderNumber, allowSignature) {
+    const showSignature = ['livraison', 'intervention', 'attachement'].includes(doc.type);
+    let signatureHTML = '';
+
+    // ✅ avec papier en-tête : pas de cachet (et signature seulement dernière page si BL/BI/ATT)
+    if (allowSignature && showSignature) {
+      signatureHTML = `
+        <div style="margin-top:60px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="width:45%;padding:20px;text-align:center;">
+            <div style="border-top:2px solid #1E3A8A;padding-top:10px;margin-top:40px;"></div>
+            <div style="font-weight:bold;margin-top:10px;font-size:12px;color:#1E3A8A;">Signature & Cachet de l'Entreprise</div>
+          </div>
+          <div style="width:45%;padding:20px;text-align:center;">
+            <div style="border-top:2px solid #1E3A8A;padding-top:10px;margin-top:40px;"></div>
+            <div style="font-weight:bold;margin-top:10px;font-size:12px;color:#1E3A8A;">Signature & Cachet du Client</div>
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <style>
+        @media print {
+          body { margin:0 !important; padding:0 !important; }
+          .print-page {
+            padding-top:5.5cm !important;
+            padding-left:0.5cm !important;
+            padding-right:0.5cm !important;
+            padding-bottom:1cm !important;
+            min-height:29.7cm;
+            position:relative;
+            box-sizing:border-box;
+          }
+          @page { size:A4 portrait; margin:0; }
+        }
+      </style>
+
+      <div class="print-page" style="padding:5.5cm 0.5cm 1cm 0.5cm;font-family:'Segoe UI',Arial,sans-serif;position:relative;font-size:12px;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:5.5cm;background:transparent;"></div>
+
+        <div style="margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;padding-bottom:15px;border-bottom:2px solid #FFD700;">
+            <div style="flex:1;">
+              <div style="font-size:22px;font-weight:bold;color:#1E3A8A;margin-bottom:5px;">${escapeHtml(docTitle)}</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:16px;font-weight:bold;color:#1E3A8A;margin-bottom:3px;">
+                N°: ${escapeHtml(doc.number || '')}
+              </div>
+              ${suiteUnderNumber}
+              ${doc.reference ? `<div style="font-size:12px;color:#1E3A8A;"><strong>Réf:</strong> ${escapeHtml(doc.reference)}</div>` : ''}
+            </div>
+            <div style="flex:1;text-align:right;">
+              <div style="font-size:16px;color:#1E3A8A;"><strong>Date:</strong> ${escapeHtml(date)}</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:25px;">
+            <div style="background:#F8FAFC;padding:12px;border-radius:5px;border-left:4px solid #FFD700;">
+              <div style="font-weight:bold;color:#1E3A8A;font-size:14px;margin-bottom:5px;">${escapeHtml(doc.client?.name || '')}</div>
+              ${doc.client?.address ? `<div style="font-size:11px;color:#475569;">${escapeHtml(doc.client.address)}</div>` : ''}
+              ${doc.client?.phone ? `<div style="font-size:11px;color:#475569;">Tél: ${escapeHtml(doc.client.phone)}</div>` : ''}
+              <div style="font-size:11px;font-weight:bold;color:#1E3A8A;margin-top:5px;">ICE: ${escapeHtml(doc.client?.ice || '')}</div>
+            </div>
+          </div>
+
+          <div style="margin:20px 0;">
+            <table style="width:100%;border-collapse:collapse;border:1px solid #1E3A8A;font-size:10px;">
+              ${tableHTML}
+            </table>
+          </div>
+
+          <div style="margin:20px 0;">
+            ${totalsHTML}
+            ${amountWordsHTML}
+          </div>
+
+          ${signatureHTML}
+        </div>
+
+        ${suiteFooter}
+      </div>
+    `;
+  }
+
+  function createPrintWithoutHeader(docTitle, date, doc, tableHTML, totalsHTML, amountWordsHTML, suiteFooter, suiteUnderNumber, allowSignature) {
+    const showSignature = ['livraison', 'intervention', 'attachement'].includes(doc.type);
+
+    const logoHTML = window.printLogoDataUrl
+      ? `<img src="${window.printLogoDataUrl}" alt="Logo" style="max-height:55px;max-width:180px;object-fit:contain;display:block;margin-bottom:6px;">`
+      : '';
+
+    let signatureHTML = '';
+
+    // ✅ signature/cachet UNIQUEMENT sur la DERNIÈRE PAGE
+    if (allowSignature) {
+      if (showSignature) {
+        signatureHTML = `
+          <div style="margin-top:60px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="width:45%;padding:20px;text-align:center;">
+              <div style="border-top:2px solid #1E3A8A;padding-top:10px;margin-top:40px;"></div>
+              <div style="font-weight:bold;margin-top:10px;font-size:12px;color:#1E3A8A;">Signature & Cachet de l'Entreprise</div>
+            </div>
+            <div style="width:45%;padding:20px;text-align:center;">
+              <div style="border-top:2px solid #1E3A8A;padding-top:10px;margin-top:40px;"></div>
+              <div style="font-weight:bold;margin-top:10px;font-size:12px;color:#1E3A8A;">Signature & Cachet du Client</div>
+            </div>
+          </div>
+        `;
+      } else {
+        const wantsStamp = (window.signatureMode === 'stamp');
+        const hasStamp = !!window.printStampDataUrl;
+
+        if (wantsStamp && hasStamp) {
+          signatureHTML = `
+            <div style="margin-top:35px;display:flex;justify-content:flex-end;">
+              <div style="text-align:right;">
+                <div style="font-size:12px;font-weight:bold;color:#1E3A8A;margin-bottom:8px;">Cachet</div>
+                <img src="${window.printStampDataUrl}" alt="Cachet" style="max-height:110px;max-width:180px;object-fit:contain;border:1px solid #E2E8F0;border-radius:8px;padding:6px;background:#fff;">
+              </div>
+            </div>
+          `;
+        } else {
+          signatureHTML = `
+            <div style="margin-top:40px;padding:15px;text-align:right;">
+              <div style="display:inline-block;text-align:left;">
+                <div style="font-size:16px;font-weight:bold;color:#000;margin-bottom:5px;">Arab Agencement</div>
+                <div style="font-size:12px;font-weight:bold;color:#333;margin-bottom:10px;">Signature Électronique</div>
+                <div style="font-size:10px;color:#666;">Certifié le: ${new Date().toLocaleDateString('fr-FR')}</div>
+                <div style="font-size:9px;color:#999;margin-top:8px;font-style:italic;">
+                  - Document généré électroniquement - Pas de signature manuscrite requise
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+    }
+
+    return `
+      <style>
+        @media print {
+          body { margin:0 !important; padding:0 !important; }
+          .print-page {
+            padding-top:0.5cm !important;
+            padding-left:0.5cm !important;
+            padding-right:0.5cm !important;
+            padding-bottom:1cm !important;
+            min-height:29.7cm;
+            position:relative;
+            box-sizing:border-box;
+          }
+          @page { size:A4 portrait; margin:0; }
+        }
+      </style>
+
+      <div class="print-page" style="padding:0.5cm 0.5cm 1cm 0.5cm;font-family:'Segoe UI',Arial,sans-serif;position:relative;font-size:12px;">
+        <div style="border-bottom:3px solid #FFD700;padding-bottom:15px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+            <div style="flex:2;">
+              ${logoHTML}
+              <div style="font-size:24px;font-weight:bold;color:#1E3A8A;margin-bottom:3px;">ARAB AGENCEMENT</div>
+              <div style="font-size:13px;color:#1E3A8A;margin-bottom:5px;background:#FFFBEB;padding:4px 8px;display:inline-block;border-radius:3px;">
+                Votre conseiller permanent en bâtiment
+              </div>
+              <div style="font-size:12px;color:#1E3A8A;margin-top:5px;">
+                <span style="font-weight:bold;">Bâtiment</span> |
+                <span style="font-weight:bold;">Rénovation</span> |
+                <span style="font-weight:bold;">Tous corps d'état</span>
+              </div>
+            </div>
+
+            <div style="flex:1;text-align:right;">
+              <div style="font-size:10px;color:#1E3A8A;margin-bottom:2px;"><strong>Patente:</strong> 34704631</div>
+              <div style="font-size:10px;color:#1E3A8A;margin-bottom:2px;"><strong>IF:</strong> 24814243 ~ <strong>RC:</strong> 380851</div>
+              <div style="font-size:10px;color:#1E3A8A;"><strong>ICE:</strong> 001835752000047</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #FFD700;">
+          <div style="flex:1;">
+            <div style="font-size:22px;font-weight:bold;color:#1E3A8A;margin-bottom:5px;">${escapeHtml(docTitle)}</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="font-size:16px;font-weight:bold;color:#1E3A8A;margin-bottom:3px;">
+              N°: ${escapeHtml(doc.number || '')}
+            </div>
+            ${suiteUnderNumber}
+            ${doc.reference ? `<div style="font-size:12px;color:#1E3A8A;"><strong>Réf:</strong> ${escapeHtml(doc.reference)}</div>` : ''}
+          </div>
+          <div style="flex:1;text-align:right;">
+            <div style="font-size:16px;color:#1E3A8A;"><strong>Date:</strong> ${escapeHtml(date)}</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <div style="background:#F8FAFC;padding:12px;border-radius:5px;border-left:4px solid #FFD700;">
+            <div style="font-weight:bold;color:#1E3A8A;font-size:14px;margin-bottom:5px;">${escapeHtml(doc.client?.name || '')}</div>
+            ${doc.client?.address ? `<div style="font-size:11px;color:#475569;">${escapeHtml(doc.client.address)}</div>` : ''}
+            ${doc.client?.phone ? `<div style="font-size:11px;color:#475569;">Tél: ${escapeHtml(doc.client.phone)}</div>` : ''}
+            <div style="font-size:11px;font-weight:bold;color:#1E3A8A;margin-top:5px;">ICE: ${escapeHtml(doc.client?.ice || '')}</div>
+          </div>
+        </div>
+
+        <div style="margin:20px 0;">
+          <table style="width:100%;border-collapse:collapse;border:1px solid #1E3A8A;font-size:10px;">
+            ${tableHTML}
+          </table>
+        </div>
+
+        <div style="margin:20px 0;">
+          ${totalsHTML}
+          ${amountWordsHTML}
+        </div>
+
+        ${signatureHTML}
+
+        <div style="position:absolute;bottom:1cm;left:0.5cm;right:0.5cm;border-top:2px solid #FFD700;padding-top:12px;font-size:10px;color:#1E3A8A;">
+          <div style="display:flex;justify-content:space-between;">
+            <div style="flex:1;">
+              <div style="font-size:12px;font-weight:bold;margin-bottom:3px;">ARAB AGENCEMENT SARL</div>
+              <div style="margin-bottom:3px;">SARL au Capital de 1 000 000,00 Dhs.</div>
+              <div style="color:#DC2626;font-weight:bold;margin-top:3px;">✉️ arab.agencement@gmail.com</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              264, BD BRAHIM ROUDANI<br>
+              RÉS AL WIFAK ÉTAGE 2 N° 23<br>
+              CASABLANCA
+            </div>
+            <div style="flex:1;text-align:right;">
+              <div>CNSS: 5512729</div>
+              <div>Tél: 05 20 62 31 61</div>
+              <div style="font-style:italic;margin-top:3px;">© ARAB AGENCEMENT</div>
+            </div>
+          </div>
+        </div>
+
+        ${suiteFooter}
+      </div>
+    `;
+  }
+
+  // ==================== UTILS ====================
+  function escapeHtml(str) {
+    return String(str || '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  // Exposer (utile)
+  window.viewDocument = viewDocument;
+  window.editDocument = editDocument;
+  window.deleteDocument = deleteDocument;
+  window.printSavedDocument = printSavedDocument;
+
+})();
+</script>
+</body>
+</html>
